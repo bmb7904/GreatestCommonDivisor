@@ -166,9 +166,16 @@ public class GCDGUI extends javax.swing.JFrame {
     // contains code for finding the greatest commond divisor based on the 
     // Euclididean Algorithm
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        int m = Integer.parseInt(num1.getText());
-        int n = Integer.parseInt(num2.getText());
-        int q;
+        //calls the GreatestCommonDivisor free function that is defined below
+        // -- takes the two text fields as arguments 
+        int gcd = GreatestCommonDivisor(Integer.parseInt(num1.getText()),
+                              Integer.parseInt(num2.getText()));
+        
+        answerLabel.setText("Greatest Common Divisor = " + gcd);
+        nameLabel.setText("Programmer: Brett Bernardi");
+        
+        
+        /*int q;
         int r;
         boolean isSadieGay = true;
         
@@ -189,9 +196,8 @@ public class GCDGUI extends javax.swing.JFrame {
             }
         }
         
-        answerLabel.setText("Greatest Common Divisor = " + n);
-        nameLabel.setText("Programmer: Brett Bernardi");
-        
+
+        */
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     /**
@@ -241,4 +247,40 @@ public class GCDGUI extends javax.swing.JFrame {
     private javax.swing.JTextField num2;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
+
+    /* The Euclidean Algorithm for finding the GCD(m,n) is as follows:
+    m and n are integers. First, m = q*n + r for some integers q,r 
+    and with 0 <= r < n 
+    - In the next iteration, m becomes n and n becomes r. A new q and a new r
+    are produced. This process is repeated until r = 0. When r = 0, the PREVIOUS
+    r is the greatest common divisor.
+    -- This free functions return the GCD as an int
+    */
+    static int GreatestCommonDivisor(int m, int n) {
+        // m = q * n + r for some integers r and q and 0 <= r <= n
+        // the remainder 
+        int r = 0;
+        // the quotionent
+        int q = 0;
+
+        while(true) {
+            // calculates first quotient
+            q = m/n;
+            // first iteration of the general formula
+            r = m - (n*q);
+            // shifts n over to m
+            m = n;
+            
+            // checks to see if r is 0, if so, the PREVIOUS r, which is n, is 
+            // returned. If r is not = 0, another iteration is performed.
+            if (r == 0) {
+                break;
+            }
+            else {
+                n = r;
+            }
+        }
+
+        return n;
+    } //end free function GreatestCommonDivisor
 }
