@@ -5,10 +5,8 @@
  */
 package bernardi;
 
-/**
- *
- * @author HP
- */
+import java.lang.Math;
+
 public class GCDGUI extends javax.swing.JFrame {
 
     /**
@@ -40,7 +38,9 @@ public class GCDGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Greatest Common Divisor");
+        setAlwaysOnTop(true);
         setLocation(new java.awt.Point(475, 225));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(148, 6, 0));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -255,32 +255,43 @@ public class GCDGUI extends javax.swing.JFrame {
     are produced. This process is repeated until r = 0. When r = 0, the PREVIOUS
     r is the greatest common divisor.
     -- This free functions return the GCD as an int
+    -- Normally, you want the Euclidean algorithm to start with m > n, however,
+    as a result of the following code, in a such case where m < n, after 1 
+    iteration of the loop, m and n will switch places and m will now become
+    the larger integer. With m now being the larger int, the loop can be 
+    executed as normal. This is convienent and it is not needed to implement code
+    that will have m and n switch places prior to starting.
+    --The GCD is put through the abs value function before being returned. This
+    is because the GCD will always be positive. the GCD is defined as being the
+    largest natural number that divides both m and n and thus:
+    GCD(m,n) = GCD(-m,-n) = GCD(-m,n) = GCD(m,-n)
+    
     */
     static int GreatestCommonDivisor(int m, int n) {
         // m = q * n + r for some integers r and q and 0 <= r <= n
         // the remainder 
-        int r = 0;
+        int r;
         // the quotionent
-        int q = 0;
+        int q;
 
         while(true) {
             // calculates first quotient
-            q = m/n;
-            // first iteration of the general formula
-            r = m - (n*q);
-            // shifts n over to m
-            m = n;
-            
-            // checks to see if r is 0, if so, the PREVIOUS r, which is n, is 
-            // returned. If r is not = 0, another iteration is performed.
+            q = m/n; // This is integer division. Always returns an int.
+            // first iteration of the general formula.
+            // calculates the remainder (r)
+            r = m%n;
+            // checks to see if r = 0. If so, the PREVIOUS r, which is currently n, is 
+            // the GCD. Breaks out of loop and returns n which is the GCD.
             if (r == 0) {
                 break;
             }
-            else {
-                n = r;
-            }
+            // shifts n over to m
+            m = n; // ** This is assignment - order matters. Do not alternate
+            // shifts r over to n
+            n = r; // ** This is assignment - order matters. Do not alternate
+            
         }
 
-        return n;
+        return Math.abs(n);
     } //end free function GreatestCommonDivisor
 }
